@@ -54,6 +54,26 @@ async def handle_client(reader, writer):
                     await send_404(writer)
                     return
                 await send_response(writer, response_body, content_type="text/html")
+            elif path.endswith('.jpg') or path.endswith('.jpeg'):
+                file_path = os.path.join(ma_html_files,path.lstrip('/'))
+                if os.path.exists(file_path):
+                    def read_binary():
+                        with open(file_path, 'rb') as f:
+                            return f.read()
+                    content = await asyncio.to_thread(read_binary)
+                    content_type="image/jpeg"
+
+                    response = (
+                        f"HTTP/1.1 200 OK\r\n"
+                        f"Content-Type: {content_type}\r\n"
+                        f"Content-Length: {len(content)}\r\n"
+                        f"Connection: close\r\n"
+                        f"\r\n"
+                    ).encode() + content
+                    writer.write(response)
+                    await writer.drain()
+                    return
+                    
             else:
                 await send_404(writer)
 
