@@ -112,8 +112,13 @@ async def send_response(writer, body, status_code=200, content_type="text/html")
     await writer.drain()
 
 async def send_404(writer):
-    body = "404 Not Found"
-    await send_response(writer, body, status_code=404, content_type="text/plain")
+    content = await read_templates("404.html")
+    if content is None:
+        content = "404 Not Found"
+        content_type = "text/plain"
+    else:
+        content_type = "text/html"
+    await send_response(writer, content, status_code=404, content_type=content_type)
 
 async def send_400(writer):
     body = "400 Bad Request"
