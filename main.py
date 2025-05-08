@@ -1,3 +1,4 @@
+
 import sys
 from PyQt5.QtCore import*
 from PyQt5.QtWidgets import*
@@ -40,7 +41,7 @@ class MainWindow(QMainWindow):
     
     def navigate_to_url(self):
         query= self.url_bar.text()
-        if not query.startswith("http://") and not query.startswitch("http://"):
+        if not query.startswith("http://") and not query.startswith("http://"):
             local_url = f"http://localhost:8085/{query}.html"
             self.browser.setUrl(QUrl(local_url))
             
@@ -55,5 +56,3 @@ QApplication.setApplicationName('Avater: The Last Broweser')
 window=MainWindow()
 window.show()
 sys.exit(app.exec_())
-
-
