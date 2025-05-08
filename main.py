@@ -7,7 +7,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.browser=QWebEngineView()
-        self.browser.setUrl(QUrl('http://google.com'))
+        self.browser.setUrl(QUrl('http://localhost:8085'))
         self.setCentralWidget(self.browser)
         self.showMaximized()
         
@@ -36,11 +36,16 @@ class MainWindow(QMainWindow):
         self.browser.urlChanged.connect(self.update_url)
 
     def navigate_home(self):
-        self.browser.setUrl(QUrl('http://google.com'))
+        self.browser.setUrl(QUrl('http://localhost:8085/'))
     
     def navigate_to_url(self):
-        url= self.url_bar.text()
-        self.browser.setUrl(QUrl(url))
+        query= self.url_bar.text()
+        if not query.startswith("http://") and not query.startswitch("http://"):
+            local_url = f"http://localhost:8085/{query}.html"
+            self.browser.setUrl(QUrl(local_url))
+            
+        else:
+            self.browser.setUrl(QUrl(query))
     
     def update_url(self, q):
         self.url_bar.setText(q.toString())
